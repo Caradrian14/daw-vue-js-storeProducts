@@ -3,35 +3,36 @@
 			<div class="col-sm-6 col-md-4 col-lg-4 hideElement">
 				<form id="new-prod" novalidate @submit.prevent="submitAdd" >
 					<fieldset>
-						<legend class="bg-dark text-white text-center">Producto</legend>
+						<legend class="bg-dark text-white text-center" v-if="id">Editar producto</legend>
+						<legend class="bg-dark text-white text-center" v-else>Añadir producto</legend>
 						<!-- Aquí los inputs y botones del form -->
 						<div class="form-group">
 							<label for="newprod-id">ID:</label>
-						<input type="text" id="newprod-id" class="form-control" disabled>
+						<input type="text" id="newprod-id" class="form-control" v-model="product.id" disabled>
 							<span class="error"></span>
 						</div>
 						<div class="form-group">
 							<label for="newprod-name">Nombre:</label>
-							<input type="text" id="newprod-name" class="form-control" minlength="5" maxlength="50" v-model="newprodName" required>
+							<input type="text" id="newprod-name" class="form-control" minlength="5" maxlength="50" v-model="product.name" required>
 							<span class="error"></span>
 						</div>
 						<div class="form-group">
 							<label for="newprod-cat">Categoría:</label>
-							<select class="form-control" id="newprod-cat" v-for="cat in categoryList" required>
+							<select class="form-control" id="newprod-cat" v-model="newProdCat" required>
 								<option value="" ref="newprod-cat" disabled>--- Selecciona categoría ---</option>
                                 <!-- Aqui la Lista de Categoria -->
-                                <option  value="{{cat.id}}">{{cat.name}}</option>
+                                <option v-for="cat in categoryList" :value="cat.id">{{cat.name}}</option>
                             </select>
 							<span class="error"></span>
 						</div>
 						<div class="form-group">
 							<label for="newprod-units">Unidades.:</label>
-							<input type="number" id="newprod-units" v-model="newprodUnits" class="form-control" min="0" max="100">
+							<input type="number" id="newprod-units" v-model="product.units" class="form-control" min="0" max="100">
 							<span class="error"></span>
 						</div>
 						<div class="form-group">
 							<label for="newprod-price">Precio/u.:</label>
-							<input type="number" id="newprod-price" v-model="newprodPrice" class="form-control" min="0" step=".01" required>
+							<input type="number" id="newprod-price" v-model="product.price" class="form-control" min="0" step=".01" required>
 							<span class="error"></span>
 						</div>
 						<br>
@@ -47,28 +48,31 @@
 
 import { store } from '../store';
 export default {
-    
+    props: {
+        id: String,
+    },
+	mounted() {
+        if (this.$props.id) {
+            this.$data.product = store.getProductById(this.id) || {}
+        }
+    },
     methods:{
        submitAdd(){
-		
-        //Accediendo a variables
-        let name = this.$data.newprodName;
-        //Cambiar esta parte
-        let cat = 1;
-        let units = this.$data.newprodUnits;
-        let price = this.$data.newprodPrice;
-        store.addProducts(name, cat, units, price);
-		this.$data.newprodName = '';
-		this.$data.newprodPrice = '';
-		this.$data.newprodUnits = '';
+		//Accediendo a variables
+		if (this.product.name !== "" && this.product.category !== "" && this.product.units !== "" && this.product.price !== "") {
+			if(!this.id){
+				store.addProducts(this.product.name, this.product.cat, this.product.units, this.product.price);
+			}else{
+				store.editProduct(this.product);
+			}
+		}
+		this.$router.push('/');
        }
     },
     data(){
         return{
             categoryList: store.state.categories,
-            newprodPrice:'',
-            newprodUnits: '',
-            newprodName: '',
+            product: {}, 	
         }
     }
 }

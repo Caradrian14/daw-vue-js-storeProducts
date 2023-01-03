@@ -4,6 +4,16 @@
       "id": 1,
       "name": "Mobiliario",
       "description": "Muebles de oficina"
+    },
+    {
+      "name": "Airbus",
+      "description": "Empresa de aerolinias para la creacion de aviones de todo tipo",
+      "id": 2
+    },
+    {
+      "name": "Pokemon",
+      "description": "Merchandaising de Pokemon",
+      "id": 3
     }
   ],
   "products": [
@@ -11,8 +21,36 @@
       "name": "ssssss",
       "category": 1,
       "price": 2,
-      "units": 12,
+      "units": 14,
       "id": 1
+    },
+    {
+      "name": "Airbus A220",
+      "category": 1,
+      "price": 25,
+      "units": 2,
+      "id": 2
+    },
+    {
+      "name": "bla",
+      "category": 1,
+      "price": 2,
+      "units": 1,
+      "id": 3
+    },
+    {
+      "name": "Figurita",
+      "category": 3,
+      "price": 4,
+      "units": 12,
+      "id": 4
+    },
+    {
+      "name": "Silla de ordenador",
+      "category": 1,
+      "price": 5,
+      "units": 1,
+      "id": 5
     }
   ]
 }

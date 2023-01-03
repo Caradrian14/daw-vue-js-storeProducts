@@ -39,6 +39,16 @@ export const store={
         .catch(response => this.state.errors.push('Error: no se ha añadido el registro. '+response.message))
     },
 
+    addCategory(name, desc){
+      axios.post(url+'/categories', {
+        name: name, 
+        description: desc
+        })
+        .then(response => this.state.categories.push(response.data)
+        )
+        .catch(response => this.state.errors.push('Error: no se ha añadido el registro. '+response.message))
+    },
+
     plusUnitProducts(id, unitPlus) {
         axios.patch(url+'/products/'+id, {
             units: unitPlus
@@ -95,5 +105,40 @@ export const store={
     },
     delError(errorToDelete){
       this.state.errors.filter( error => error !== errorToDelete);
+    },
+    getProductById(id) {
+      {
+        axios.get(url+'/products')
+          .then(response => {
+            let dato = response.data;
+            return dato[id];
+          })
+          .catch(response => {
+            if (!response.status) {// Si el servidor no responde 'response' no es un objeto sino texto
+              this.state.errors.push('Error: el servidor no responde');
+                console.log(response);
+            } else {
+              this.state.errors.push('Error '+response.status+': '+response.message);          
+            }
+            });
+        }
+    },
+    editProduct(product){
+      axios.put(url+'/products'+product.id, {
+        id: product.id,
+        name: product.name,
+        category: product.category,
+        price: product.price,
+        units: units !== undefined ? units : product.units
+      }).then(response => {
+        this.state.products.splice(this.state.products.findIndex(productToFind => productToFind.id === product.id), 1, response.data)
+      }).catch(error => {
+        if (!response.status) {// Si el servidor no responde 'response' no es un objeto sino texto
+          this.state.errors.push('Error: el servidor no responde');
+            console.log(response);
+        } else {
+          this.state.errors.push('Error '+response.status+': '+response.message);          
+        }
+      });
     }
 }

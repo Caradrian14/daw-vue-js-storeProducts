@@ -1,24 +1,19 @@
 <template>
   <appTitle></appTitle>
-
   <errors v-for="error in errors" :key="error.id" :error="error"></errors>
-  
-  <tableBody></tableBody>
-  <productForm></productForm>
+  <router-view></router-view>
 </template>
 
 
 <script>
   import appTitle from './components/appTitle.vue';
-  import tableBody from './components/tableBody.vue';
-  import productForm from './components/productForm.vue';
   import errors from "./components/errors.vue";
+
   import { store } from "./store";
+  
   export default {
   components: {
     appTitle,
-    tableBody,
-    productForm,
     errors
   },
   data() {

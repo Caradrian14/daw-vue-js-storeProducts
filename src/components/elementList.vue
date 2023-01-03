@@ -3,7 +3,7 @@
         <td>{{ prod.id}}</td><td>{{prod.name}}</td><td>{{prod.category}}</td><td>{{prod.units}}</td><td>{{prod.price}}</td><td>{{import}}</td>
         <td><button class='btn btn-secondary up'><span class='material-icons' @click="addUnit">arrow_drop_up</span></button>
         <button class='btn btn-secondary down'> <span class='material-icons' @click="quitUnit">arrow_drop_down</span></button> 
-        <button class='btn btn-secondary edit'> <span class='material-icons'>edit</span></button>
+        <button class='btn btn-secondary edit'> <span class='material-icons' @click="$router.push(`/edit-product/${prod.id}`)">edit</span></button>
         <button class='btn btn-secondary delete'> <span class='material-icons' @click="quitProd">delete</span></button></td>
     </tr>
 </template>

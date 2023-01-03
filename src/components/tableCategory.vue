@@ -10,24 +10,15 @@
                         <tr class="text-white text-center">
                             <th>Id</th>
                             <th>Nombre</th>
-                            <th>Categoría</th>
-                            <th>Uds.</th>
-                            <th>Precio/u</th>
-                            <th>Importe</th>
-                            <th>Acciones</th>
+                            <th>Descripcion</th>
                         </tr>
                     </thead>
                     <tbody id="tableProducts">
                     <!-- AQUI INSERTAMOS -->
                     
-                    <elementList v-for="element in listProducts" :key="element" :prod="element" class="text-success"></elementList>
+                    <elementList v-for="element in listCategories" :key="element" :cat="element" class="text-success"></elementList>
                     
                     </tbody>
-                    <tfoot>
-                        <th colspan="5">Importe total del almacén: </th>
-                        <th id="totalImport">{{ totalImport }}</th>
-                        <th></th>
-                    </tfoot>
                 </table>
             </div>
         </div>
@@ -36,7 +27,7 @@
 
 <script>
 import { store } from '../store';
-import elementList from './elementList.vue';
+import elementList from './categoryElement.vue';
 
 export default{
   components: {
@@ -44,14 +35,8 @@ export default{
   },
   data(){
     return{
-        listProducts: store.state.products
+        listCategories: store.state.categories
     }
-  },
-  computed: {
-    totalImport() {
-        return this.listProducts.reduce((total, product) => 
-        total += product.price * product.units, 0)
-    }
-    }
+  }
 }
 </script>

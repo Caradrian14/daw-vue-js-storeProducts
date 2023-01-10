@@ -51,9 +51,9 @@ export default {
     props: {
         id: String,
     },
-	mounted() {
+	async mounted() {
         if (this.$props.id) {
-            this.$data.product = store.getProductById(this.id) || {}
+            this.$data.product = await store.getProductById(this.id) || {}
         }
     },
     methods:{

@@ -27,8 +27,8 @@ export const store={
       }
     },
 
-    addProducts(name, cat, units, price) {
-      axios.post(url+'/products', {
+    async addProducts(name, cat, units, price) {
+      await axios.post(url+'/products', {
         name: name, 
         category: cat,
         price: price,
@@ -106,12 +106,12 @@ export const store={
     delError(errorToDelete){
       this.state.errors.filter( error => error !== errorToDelete);
     },
-    getProductById(id) {
+    async getProductById(id) {
       {
-        axios.get(url+'/products')
+        /*axios.get(url+'/products/' + id)
           .then(response => {
             let dato = response.data;
-            return dato[id];
+            return dato;
           })
           .catch(response => {
             if (!response.status) {// Si el servidor no responde 'response' no es un objeto sino texto
@@ -121,15 +121,26 @@ export const store={
               this.state.errors.push('Error '+response.status+': '+response.message);          
             }
             });
-        }
+        }*/
+        try {
+          const response = await axios.get(url+'/products/' + id)
+          return response.data
+        } catch(err) {
+          if (!response.status) {// Si el servidor no responde 'response' no es un objeto sino texto
+            this.state.errors.push('Error: el servidor no responde');
+              console.log(response);
+          } else {
+            this.state.errors.push('Error '+response.status+': '+response.message);          
+          }
+        }}
     },
     editProduct(product){
-      axios.put(url+'/products'+product.id, {
+      axios.put(url+'/products/'+product.id, {
         id: product.id,
         name: product.name,
         category: product.category,
         price: product.price,
-        units: units !== undefined ? units : product.units
+        units: product.units === undefined ? 0 : product.units
       }).then(response => {
         this.state.products.splice(this.state.products.findIndex(productToFind => productToFind.id === product.id), 1, response.data)
       }).catch(error => {
